@@ -1,0 +1,22 @@
+# v2023.11.20 [rivy]
+# spell-checker:ignore deps EOLs MSVC (people) Roy Ivy III * rivy
+
+# default; use LF EOLs for text files
+* text=auto eol=lf
+
+# CRLF required; force required CRLF EOLs for WinOS BAT/CMD and MSVC SLN files
+*.[bB][aA][tT]    text eol=crlf
+*.[cC][mM][dD]    text eol=crlf
+*.[sS][lL][nN]    text eol=crlf
+
+# binaries; force binary interpretation (limits worthless wall-of-text diffs and avoids CRLF/LF conversion issues)
+# - note: use `git diff --text ...` or `git log --text ...` to override and show differences as text
+# * build/dist artifacts
+build/**/*    binary
+dist/**/*     binary
+# * dep locks (eg, `package-lock.json`, `yarn.lock`)
+.deps-lock/*  binary
+# * vendor
+vendor/**/*   binary
+# * `yarn` config files
+.yarn/**/*    binary
