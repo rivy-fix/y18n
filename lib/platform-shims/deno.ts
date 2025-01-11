@@ -9,9 +9,15 @@ export default {
       try {
         return Deno.readTextFileSync(path)
       } catch (err) {
-        // Fake the same error as Node.js, so that it does not bubble.
-        err.code = 'ENOENT'
-        throw err
+        // simulate the same error as Node.js (ErrnoException), so that it can be caught by the same caller code
+        const e = new Error(`ENOENT: no such file or directory, open '${path}'`, {
+          cause: err,
+        }) as Error & { code?: string; errno?: number; path?: string; syscall?: string }
+        e.code = 'ENOENT'
+        e.errno = -4058
+        e.syscall = 'sysopen'
+        e.path = path
+        throw e
       }
     },
     writeFile: Deno.writeFile
